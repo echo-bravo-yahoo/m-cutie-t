@@ -1,3 +1,5 @@
+import MqttTopics from "mqtt-topics";
+
 import { getConnection } from "../util/connections.js";
 import Output from "../util/generic-output.js";
 
@@ -33,6 +35,17 @@ export default class MQTT extends Output {
   async send(message) {
     const interpolatedTopic = this.interpolateConfigString(this.config.topic);
     this.mqtt.sendRaw(interpolatedTopic, JSON.stringify(message));
+  }
+
+  // TODO: dupe of inputs/mqtt.js:::matchesTopic
+  matchesTopic(messageTopic) {
+    if (this.config.topic) {
+      return MqttTopics.match(topic, messageTopic);
+    }
+
+    return this.config.topics.some((topic) =>
+      MqttTopics.match(topic, messageTopic)
+    );
   }
 }
 

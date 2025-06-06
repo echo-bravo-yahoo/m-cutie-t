@@ -47,6 +47,24 @@ export default class BME680 extends Sensor {
     this.info({}, `Disabled bme680.`);
     this.enabled = false;
   }
+
+  collateSamples() {
+    return this.samples.reduce(
+      (collated, sample) => {
+        collated.temp.push(sample.temp);
+        collated.humidity.push(sample.humidity);
+        collated.pressure.push(sample.pressure);
+        collated.gas.push(sample.gas);
+      },
+      {
+        metadata: { island: globals.name },
+        temp: [],
+        humidity: [],
+        pressure: [],
+        gas: [],
+      }
+    );
+  }
 }
 
 /*
