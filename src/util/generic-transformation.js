@@ -20,6 +20,7 @@ export class Transformation extends Step {
   }
 
   async handleMessage(message) {
+    console.log("Before:", JSON.stringify(message, null, 2));
     const transformed = this.transform(message);
     console.log(
       `Step "${this.config.type}": transforming message: ${JSON.stringify(message, null, 2)}\nto message: ${JSON.stringify(transformed, null, 2)}`
@@ -44,6 +45,11 @@ export class Transformation extends Step {
       paths: this.config.paths,
       current: this.config.basePath || "",
     };
+
+    console.log("isArrayOfReadings", isArrayOfReadings);
+    console.log("isSimpleReading", isSimpleReading);
+    console.log("isCompositeReading", isCompositeReading);
+    console.log("isPrimitiveReading", isPrimitiveReading);
 
     let replacement;
     if (isArrayOfReadings) {
@@ -105,6 +111,7 @@ export class Transformation extends Step {
   }
 
   transformCompositeReading(context) {
+    console.log("CONTEXT", context);
     for (let path of Object.keys(this.config.paths)) {
       this.doTransformSingle({
         ...context,
