@@ -46,22 +46,6 @@ export default class BME280 extends Sensor {
   }
 
   collateSamples() {
-    // this.info({}, `Samples: ${JSON.stringify(this.samples, null, 2)}`);
-    // const res = this.samples.reduce(
-    //   (collated, sample) => {
-    //     collated.temp.push(sample.temp);
-    //     collated.humidity.push(sample.humidity);
-    //     collated.pressure.push(sample.pressure);
-    //     return collated;
-    //   },
-    //   {
-    //     metadata: { island: globals.name },
-    //     temp: [],
-    //     humidity: [],
-    //     pressure: [],
-    //   }
-    // );
-    // this.info({}, `Collated samples: ${JSON.stringify(res, null, 2)}`);
     return this.samples;
   }
 }
