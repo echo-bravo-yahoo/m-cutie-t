@@ -6,7 +6,6 @@ export default class Convert extends Transformation {
   }
 
   transformSingle(value, config, context) {
-    console.log("CONFIG", JSON.stringify(config, null, 4));
     if (config.from === "celsius" && config.to === "fahrenheit") {
       return (9 / 5) * value + 32;
     } else if (config.from === "fahrenheit" && config.to === "celsius") {

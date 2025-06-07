@@ -6,9 +6,6 @@ export default class Offset extends Transformation {
   }
 
   transformSingle(value, config, _context) {
-    console.log("VALUE", value);
-    console.log("CONFIG", config);
-    console.log("CONTEXT", _context);
     return value + config.offset;
   }
 }

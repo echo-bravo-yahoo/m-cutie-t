@@ -111,7 +111,6 @@ export class Transformation extends Step {
   }
 
   transformCompositeReading(context) {
-    console.log("CONTEXT", context);
     for (let path of Object.keys(this.config.paths)) {
       this.doTransformSingle({
         ...context,
