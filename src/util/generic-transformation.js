@@ -21,6 +21,9 @@ export class Transformation extends Step {
 
   async handleMessage(message) {
     const transformed = this.transform(message);
+    console.log(
+      `Step ${this.name}: transforming message: ${JSON.stringify(message, null, 2)}\nto message: ${JSON.stringify(transformed, null, 2)}`
+    );
     if (this.next) {
       return this.next.handleMessage(transformed);
     } else {
