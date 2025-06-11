@@ -15,6 +15,7 @@ export default class InfluxDB extends Output {
   }
 
   async enable() {
+    this.influxdb = getConnection(this.name);
     this.enabled = true;
   }
 
@@ -22,19 +23,18 @@ export default class InfluxDB extends Output {
     this.enabled = false;
   }
 
-  async send({ measurementName, event, labels }) {
+  async send({ event, labels }) {
+    const measurementName = this.config.measurement;
     let data = [],
       labelsArray = [],
       labelsString = "";
 
     for (const [key, value] of Object.entries(event)) {
-      if (key !== "metadata" && key !== "aggregationMetadata") {
+      if (key !== "metadata") {
         data.push(`${key}=${value}`);
+      } else {
+        labelsArray.push(`${key}=${value}`);
       }
-    }
-
-    for (const [labelKey, labelValue] of Object.entries(labels)) {
-      labelsArray.push(`${labelKey}=${labelValue}`);
     }
 
     labelsString = labelsArray.join(",");
@@ -42,7 +42,8 @@ export default class InfluxDB extends Output {
     data = data.join(",");
 
     let line = `${measurementName}${labelsString} ${data} ${new Date().valueOf()}`;
-    const { url, organization, bucket, precision, token } = this.config;
+    const { url, organization, bucket, precision, token } =
+      this.influxdb.config;
     let command = `curl --request POST \
 --header "Authorization: Token ${token}" \
 --header "Content-Type: text/plain; charset=utf-8" \
@@ -50,8 +51,8 @@ export default class InfluxDB extends Output {
 --data-binary "${line}" \
 "${url}?org=${organization}&bucket=${bucket}&precision=${precision}"`;
     console.log(`Running command: ${command}`);
-    const result = exec(command);
-    console.log(`Result: ${result}`);
+    // const result = exec(command);
+    // console.log(`Result: ${result}`);
   }
 }
 
